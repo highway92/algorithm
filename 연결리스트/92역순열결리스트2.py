@@ -44,14 +44,75 @@ class Solution:
         return root
 
         
+# Definition for singly-linked list.
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+        
+        
+def reverse(start_node, end_node):
+    end_node.next = None
+    node = start_node
+    prev = None
+    while node:
+        next = node.next
+        node.next = prev
+        prev = node
+        node = next
+    return
+
+
+
 class Solution:
     def reverseBetween(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
-        root = head
-        if left == right:
-            return head
-        prev_start = None
+        prev_start = ListNode(None)
+        prev_start.next = head
         start = None
         end = None
         next_end = None
+        prev_prev = None
+        cnt = 1
+        root = head
+        node = head
         
+        if not head or left == right:
+            return head
+        
+        while node:
+            next = node.next
+            if cnt == left:
+                start = node
+                prev_prev = prev_start
+                
+            if cnt == right:
+                end = node
+                next_end = node.next
+                break
+                
+            prev_start = prev_start.next
+            node = next
+            cnt += 1
+        reverse(start,end)
+        
+        # if left == 1 and end.next == None:
+        #     reverse(start,end)
+        #     return end
+        # 역순 연결 리스트의 (처음, 끝)
+        if left == 1:
+            root = end
+            start.next = next_end
+            return root
+        # print(start,"\n",prev_prev,end,next_end)
+        prev_prev.next = end
+        start.next = next_end
+        return root
+            
+            
+        
+        
+
+        
+        
+            
             
